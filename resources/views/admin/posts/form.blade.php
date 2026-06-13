@@ -56,8 +56,9 @@
 
     <textarea
         name="content"
-        rows="10"
+        rows="30"
         class="form-control"
+          id="content"
     >{{ old('content', optional($post ?? null)->content) }}</textarea>
 
     @error('content')
@@ -137,6 +138,7 @@
         name="meta_description"
         rows="3"
         class="form-control"
+       
     >{{ old('meta_description', optional($post ?? null)->meta_description) }}</textarea>
 
     @error('meta_description')
