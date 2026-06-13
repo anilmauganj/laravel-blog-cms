@@ -70,6 +70,15 @@
                             Edit
                         </a>
 
+                        <form action="{{ route('admin.posts.destroy', $post) }}" method="POST" class="d-inline delete-form">
+                            @csrf
+                            @method('DELETE')
+
+                            <button type="button" class="btn btn-danger btn-sm delete-btn">
+                                Delete
+                            </button>
+                        </form>
+
                     </td>
 
                 </tr>
@@ -86,4 +95,35 @@
 
 </div>
 
+@endsection
+
+
+@section('plugins.Sweetalert2', true)
+@section('plugins.Toastr', true)
+
+@section('js')
+<script>
+    @if(session('success'))
+        toastr.success("{{ session('success') }}");
+    @endif
+
+    document.querySelectorAll('.delete-btn').forEach((button) => {
+        button.addEventListener('click', function () {
+            const form = this.closest('.delete-form');
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'This post will be deleted.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+    });
+</script>
 @endsection
