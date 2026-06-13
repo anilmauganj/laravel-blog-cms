@@ -51,11 +51,11 @@
                                 Edit
                             </a>
 
-                            <form action="{{ route('admin.categories.destroy', $category) }}" method="POST" class="d-inline">
+                           <form action="{{ route('admin.categories.destroy', $category) }}" method="POST" class="d-inline delete-form">
                                 @csrf
                                 @method('DELETE')
 
-                                <button class="btn btn-sm btn-danger" onclick="return confirm('Delete this category?')">
+                                <button type="button" class="btn btn-sm btn-danger delete-btn">
                                     Delete
                                 </button>
                             </form>
@@ -69,4 +69,35 @@
     </div>
 </div>
 
+@endsection
+
+
+@section('plugins.Sweetalert2', true)
+@section('plugins.Toastr', true)
+
+@section('js')
+<script>
+    @if(session('success'))
+        toastr.success("{{ session('success') }}");
+    @endif
+
+    document.querySelectorAll('.delete-btn').forEach((button) => {
+        button.addEventListener('click', function () {
+            let form = this.closest('.delete-form');
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'This category will be deleted.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+    });
+</script>
 @endsection
