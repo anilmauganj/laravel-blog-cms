@@ -327,6 +327,12 @@ return [
             'label' => 4,
             'label_color' => 'success',
         ],
+
+        [
+            'text' => 'Categories',
+            'url'  => 'admin/categories',
+            'icon' => 'fas fa-list',
+        ],
         ['header' => 'account_settings'],
         [
             'text' => 'profile',
