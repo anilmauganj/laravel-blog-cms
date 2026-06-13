@@ -32,9 +32,12 @@ class CategoryController extends Controller
      */
     public function store(CategoryRequest $request)
     {
+
+        $slug = $this->generateUniqueSlug($request->name);
+
         Category::create([
             'name' => $request->name,
-            'slug' => Str::slug($request->name),
+            'slug' => $slug,
             'description' => $request->description,
             'status' => $request->status,
         ]);
@@ -65,9 +68,11 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
+       $slug = $this->generateUniqueSlug($request->name, $category->id);
+
          $category->update([
             'name' => $request->name,
-            'slug' => Str::slug($request->name),
+            'slug' => $slug,
             'description' => $request->description,
             'status' => $request->status,
         ]);
@@ -88,4 +93,26 @@ class CategoryController extends Controller
             ->route('admin.categories.index')
             ->with('success', 'Category deleted successfully.');
     }
+
+
+
+            private function generateUniqueSlug(string $name, ?int $ignoreId = null): string
+        {
+            $slug = Str::slug($name);
+            $originalSlug = $slug;
+            $count = 1;
+
+            while (
+                Category::withTrashed()->where('slug', $slug)
+                    ->when($ignoreId, function ($query) use ($ignoreId) {
+                        $query->where('id', '!=', $ignoreId);
+                    })
+                    ->exists()
+            ) {
+                $slug = $originalSlug . '-' . $count;
+                $count++;
+            }
+
+            return $slug;
+        }
 }
