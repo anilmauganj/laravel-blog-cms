@@ -26,9 +26,12 @@
             <thead>
             <tr>
                 <th>#</th>
+                <th>Thumbnail</th>
                 <th>Title</th>
                 <th>Category</th>
                 <th>Status</th>
+                <th>Create Date</th>
+                <th>Post date</th>
                 <th width="180">Action</th>
             </tr>
             </thead>
@@ -40,6 +43,16 @@
                 <tr>
 
                     <td>{{ $loop->iteration }}</td>
+
+                    <td>
+                        @if($post->featured_image)
+                            <img
+                                src="{{ asset('storage/' . $post->featured_image) }}"
+                                width="80"
+                                class="img-thumbnail"
+                            >
+                        @endif
+                    </td>
 
                     <td>{{ $post->title }}</td>
 
@@ -61,6 +74,14 @@
 
                         @endif
 
+                    </td>
+
+                    <td>
+                        {{ $post->created_at->format('d M Y') }}
+                    </td>
+
+                    <td>
+                            {{ $post->published_at?->format('d M Y') }}
                     </td>
 
                     <td>

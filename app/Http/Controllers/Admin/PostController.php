@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\PostRequest;
 use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class PostController extends Controller
@@ -68,7 +69,13 @@ class PostController extends Controller
         $imagePath = $post->featured_image;
 
         if ($request->hasFile('featured_image')) {
-            $imagePath = $request->file('featured_image')->store('posts', 'public');
+
+            if ($post->featured_image) {
+                Storage::disk('public')->delete($post->featured_image);
+            }
+
+            $imagePath = $request->file('featured_image')
+                ->store('posts', 'public');
         }
 
         $post->update([
@@ -93,6 +100,11 @@ class PostController extends Controller
 
     public function destroy(Post $post)
     {
+
+       if ($post->featured_image) {
+           Storage::disk('public')->delete($post->featured_image);
+        }
+
         $post->delete();
 
         return redirect()
