@@ -346,6 +346,12 @@ return [
                 'url'  => 'admin/posts',
                 'icon' => 'fas fa-newspaper',
           ],
+
+          [
+            'text' => 'Comments',
+            'url'  => 'admin/comments',
+            'icon' => 'fas fa-comments',
+        ],
         
         ['header' => 'account_settings'],
         [

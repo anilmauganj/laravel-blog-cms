@@ -118,10 +118,45 @@
                 </div>
             @endif
 
+           {{-- latest comments --}}
+
+            @if($comments->count())
+
+    <div class="blog-card mt-4">
+
+        <h3 class="mb-4">
+            Comments ({{ $comments->count() }})
+        </h3>
+
+        @foreach($comments as $comment)
+
+            <div class="mb-4 border-bottom pb-3">
+
+                <h5 class="mb-1">
+                    {{ $comment->name }}
+                </h5>
+
+                <small class="text-muted">
+                    {{ $comment->created_at->format('d M Y') }}
+                </small>
+
+                <p class="mt-2 mb-0">
+                    {{ $comment->message }}
+                </p>
+
+                        </div>
+
+                    @endforeach
+
+            </div>
+
+        @endif
+
+
           {{-- Comment Box --}}
 
           <div class="blog-card mt-4">
-    <h3>Leave a Comment</h3>
+           <h3>Leave a Comment</h3>
 
             @if(session('success'))
                 <div class="alert alert-success">

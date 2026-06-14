@@ -66,6 +66,11 @@ class BlogController extends Controller
                             ->oldest('id')
                             ->first();
 
+          $comments = $post->comments()
+                            ->where('status', 'approved')
+                            ->latest()
+                            ->get();
+
 
          return view(
                 'frontend.blog.show',
@@ -75,7 +80,8 @@ class BlogController extends Controller
                     'categories',
                     'relatedPosts',
                     'previousPost',
-                    'nextPost'
+                    'nextPost',
+                    'comments'
                 )
             );
     }
