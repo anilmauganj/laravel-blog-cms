@@ -2,9 +2,6 @@
 
 @section('title', 'Comments')
 
-@section('plugins.Sweetalert2', true)
-@section('plugins.Toastr', true)
-
 @section('content_header')
     <h1>Comments</h1>
 @endsection
@@ -83,15 +80,14 @@
 
                             @endif
 
-                            <form
-                                action="{{ route('admin.comments.destroy', $comment) }}"
+                            <form action="{{ route('admin.comments.destroy', $comment) }}"
                                 method="POST"
-                                class="d-inline">
+                                class="d-inline delete-form">
 
                                 @csrf
                                 @method('DELETE')
 
-                                <button class="btn btn-danger btn-sm">
+                                <button type="button" class="btn btn-danger btn-sm delete-btn">
                                     Delete
                                 </button>
 
@@ -112,5 +108,46 @@
     </div>
 
 </div>
+
+@endsection
+
+@section('plugins.Sweetalert2', true)
+@section('plugins.Toastr', true)
+
+
+@section('js')
+
+<script>
+
+    @if(session('success'))
+        toastr.success("{{ session('success') }}");
+    @endif
+
+    document.querySelectorAll('.delete-btn').forEach((button) => {
+
+        button.addEventListener('click', function () {
+
+            let form = this.closest('.delete-form');
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'This comment will be deleted.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+
+            });
+
+        });
+
+    });
+
+</script>
 
 @endsection
