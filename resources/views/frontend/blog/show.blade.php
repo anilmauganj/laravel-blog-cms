@@ -51,6 +51,26 @@
 
         </article>
 
+        @if($relatedPosts->count())
+    <div class="blog-card mt-4">
+        <h3 class="mb-4">Related Posts</h3>
+
+        @foreach($relatedPosts as $relatedPost)
+            <div class="mb-3">
+                        <h5>
+                            <a href="{{ route('blog.show', $relatedPost->slug) }}">
+                                {{ $relatedPost->title }}
+                            </a>
+                        </h5>
+
+                        <p class="text-muted mb-1">
+                            {{ $relatedPost->category->name }}
+                        </p>
+                    </div>
+                @endforeach
+            </div>
+        @endif
+
     </div>
 
     <div class="col-lg-4">

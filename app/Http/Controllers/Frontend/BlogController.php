@@ -47,10 +47,18 @@ class BlogController extends Controller
                         ->orderBy('name')
                         ->get();
 
+         $relatedPosts = Post::with('category')
+                            ->where('status', 'published')
+                            ->where('category_id', $post->category_id)
+                            ->where('id', '!=', $post->id)
+                            ->latest()
+                            ->take(3)
+                            ->get();
+
 
         return view(
         'frontend.blog.show',
-        compact('post', 'recentPosts', 'categories')
+        compact('post', 'recentPosts', 'categories', 'relatedPosts')
         );
     }
 
