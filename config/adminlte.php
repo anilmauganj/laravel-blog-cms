@@ -333,6 +333,13 @@ return [
             'url'  => 'admin/categories',
             'icon' => 'fas fa-list',
         ],
+
+        [
+            'text' => 'Tags',
+            'url'  => 'admin/tags',
+            'icon' => 'fas fa-tags',
+        ],
+        
         ['header' => 'account_settings'],
         [
             'text' => 'profile',
