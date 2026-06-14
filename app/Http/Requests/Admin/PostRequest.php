@@ -24,6 +24,8 @@ class PostRequest extends FormRequest
     {
         return [
             'category_id' => ['required', 'exists:categories,id'],
+            'tags' => ['nullable', 'array'],
+            'tags.*' => ['exists:tags,id'],
             'title' => ['required', 'string', 'max:255'],
             'excerpt' => ['nullable', 'string'],
             'content' => ['required', 'string'],

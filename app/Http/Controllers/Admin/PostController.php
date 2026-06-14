@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\PostRequest;
 use App\Models\Category;
 use App\Models\Post;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -23,8 +24,12 @@ class PostController extends Controller
      public function create()
     {
         $categories = Category::where('status', true)->orderBy('name')->get();
+        
+        $tags = Tag::where('status', true)
+                    ->orderBy('name')
+                    ->get();
 
-        return view('admin.posts.create', compact('categories'));
+        return view('admin.posts.create', compact('categories', 'tags'));
     }
 
 
@@ -51,6 +56,8 @@ class PostController extends Controller
             'meta_description' => $request->meta_description,
         ]);
 
+        $post->tags()->sync($request->tags ?? []);
+
         return redirect()
             ->route('admin.posts.index')
             ->with('success', 'Post created successfully.');
@@ -61,7 +68,11 @@ class PostController extends Controller
     {
         $categories = Category::where('status', true)->orderBy('name')->get();
 
-        return view('admin.posts.edit', compact('post', 'categories'));
+        $tags = Tag::where('status', true)
+                    ->orderBy('name')
+                    ->get();
+
+        return view('admin.posts.edit', compact('post', 'categories', 'tags'));
     }
 
      public function update(PostRequest $request, Post $post)
@@ -92,6 +103,8 @@ class PostController extends Controller
             'seo_title' => $request->seo_title,
             'meta_description' => $request->meta_description,
         ]);
+
+        $post->tags()->sync($request->tags ?? []);
 
         return redirect()
             ->route('admin.posts.index')

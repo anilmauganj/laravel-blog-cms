@@ -68,6 +68,43 @@
 
 
 <div class="form-group mb-3">
+
+    <label>Tags</label>
+
+    <select
+        name="tags[]"
+        class="form-control select2"
+        multiple>
+
+        @foreach($tags as $tag)
+
+            <option
+                value="{{ $tag->id }}"
+
+                {{ in_array(
+                    $tag->id,
+                    old(
+                        'tags',
+                        isset($post)
+                            ? $post->tags->pluck('id')->toArray()
+                            : []
+                    )
+                ) ? 'selected' : '' }}
+
+            >
+
+                {{ $tag->name }}
+
+            </option>
+
+        @endforeach
+
+    </select>
+
+</div>
+
+
+<div class="form-group mb-3">
     <label>Featured Image</label>
 
     <input

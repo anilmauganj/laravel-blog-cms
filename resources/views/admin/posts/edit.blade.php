@@ -42,4 +42,12 @@
             console.error(error);
         });
 </script>
+
+
+<script>
+    $('.select2').select2({
+        placeholder: 'Select Tags'
+    });
+</script>
+
 @endsection
