@@ -339,6 +339,13 @@ return [
             'url'  => 'admin/tags',
             'icon' => 'fas fa-tags',
         ],
+
+
+          [
+                'text' => 'Posts',
+                'url'  => 'admin/posts',
+                'icon' => 'fas fa-newspaper',
+          ],
         
         ['header' => 'account_settings'],
         [
