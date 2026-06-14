@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Post;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 
 class BlogController extends Controller
@@ -140,4 +141,37 @@ class BlogController extends Controller
                 )
             );
         }
+
+
+    public function tag(string $slug)
+    {
+        $tag = Tag::where('slug', $slug)
+            ->where('status', true)
+            ->firstOrFail();
+
+        $posts = $tag->posts()
+            ->with('category')
+            ->where('status', 'published')
+            ->latest()
+            ->paginate(10);
+
+        $recentPosts = Post::where('status', 'published')
+            ->latest()
+            ->take(5)
+            ->get();
+
+        $categories = Category::where('status', true)
+            ->orderBy('name')
+            ->get();
+
+        return view(
+            'frontend.blog.index',
+            compact(
+                'posts',
+                'tag',
+                'recentPosts',
+                'categories'
+            )
+        );
+    }
 }

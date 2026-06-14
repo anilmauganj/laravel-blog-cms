@@ -50,11 +50,33 @@
             </div>
 
         </article>
+       
+         {{-- Post tags --}}
+         @if($post->tags->count())
+
+                <div class="mt-4">
+
+                    <strong>Tags:</strong>
+
+                    @foreach($post->tags as $tag)
+
+                        <a
+                            href="{{ route('tag.show', $tag->slug) }}"
+                            class="badge bg-secondary text-decoration-none"
+                        >
+                            {{ $tag->name }}
+                        </a>
+
+                    @endforeach
+
+                </div>
+
+            @endif
 
         {{-- Next Prev Post --}}
 
         <div class="blog-card mt-4">
-    <div class="d-flex justify-content-between">
+       <div class="d-flex justify-content-between">
 
         <div>
             @if($previousPost)

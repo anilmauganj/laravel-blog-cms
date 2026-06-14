@@ -16,6 +16,9 @@ Route::get('/category/{slug}', [BlogController::class, 'category'])
 Route::get('/search', [BlogController::class, 'search'])
     ->name('blog.search');
 
+Route::get('/tag/{slug}', [BlogController::class, 'tag'])
+    ->name('tag.show');
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');

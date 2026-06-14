@@ -24,6 +24,24 @@
             </div>
         @endif
 
+        {{-- Tags wise posts --}}
+        @if(isset($tag))
+
+            <div class="category-header mb-4">
+
+                <h1 class="mb-2">
+                    Tag: {{ $tag->name }}
+                </h1>
+
+                <p class="text-muted mb-0">
+                    Showing posts tagged with
+                    <strong>{{ $tag->name }}</strong>
+                </p>
+
+            </div>
+
+        @endif
+
         {{-- Search Result --}}
          
           @if(isset($search))
