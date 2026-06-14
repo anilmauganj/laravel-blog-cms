@@ -55,11 +55,28 @@ class BlogController extends Controller
                             ->take(3)
                             ->get();
 
+         $previousPost = Post::where('status', 'published')
+                            ->where('id', '<', $post->id)
+                            ->latest('id')
+                            ->first();
 
-        return view(
-        'frontend.blog.show',
-        compact('post', 'recentPosts', 'categories', 'relatedPosts')
-        );
+            $nextPost = Post::where('status', 'published')
+                            ->where('id', '>', $post->id)
+                            ->oldest('id')
+                            ->first();
+
+
+         return view(
+                'frontend.blog.show',
+                compact(
+                    'post',
+                    'recentPosts',
+                    'categories',
+                    'relatedPosts',
+                    'previousPost',
+                    'nextPost'
+                )
+            );
     }
 
 

@@ -51,25 +51,50 @@
 
         </article>
 
-        @if($relatedPosts->count())
-    <div class="blog-card mt-4">
-        <h3 class="mb-4">Related Posts</h3>
+        {{-- Next Prev Post --}}
 
-        @foreach($relatedPosts as $relatedPost)
-            <div class="mb-3">
-                        <h5>
-                            <a href="{{ route('blog.show', $relatedPost->slug) }}">
-                                {{ $relatedPost->title }}
-                            </a>
-                        </h5>
+        <div class="blog-card mt-4">
+    <div class="d-flex justify-content-between">
 
-                        <p class="text-muted mb-1">
-                            {{ $relatedPost->category->name }}
-                        </p>
-                    </div>
-                @endforeach
+        <div>
+            @if($previousPost)
+                <a href="{{ route('blog.show', $previousPost->slug) }}">
+                    ← {{ $previousPost->title }}
+                </a>
+            @endif
+        </div>
+
+            <div>
+                @if($nextPost)
+                    <a href="{{ route('blog.show', $nextPost->slug) }}">
+                        {{ $nextPost->title }} →
+                    </a>
+                @endif
             </div>
-        @endif
+
+        </div>
+     </div>
+
+        {{-- Related Posts --}}
+        @if($relatedPosts->count())
+        <div class="blog-card mt-4">
+            <h3 class="mb-4">Related Posts</h3>
+
+            @foreach($relatedPosts as $relatedPost)
+                <div class="mb-3">
+                            <h5>
+                                <a href="{{ route('blog.show', $relatedPost->slug) }}">
+                                    {{ $relatedPost->title }}
+                                </a>
+                            </h5>
+
+                            <p class="text-muted mb-1">
+                                {{ $relatedPost->category->name }}
+                            </p>
+                        </div>
+                    @endforeach
+                </div>
+            @endif
 
     </div>
 
