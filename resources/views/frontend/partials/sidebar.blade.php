@@ -2,19 +2,21 @@
 
     <h3>Search</h3>
 
-    <form>
+ <form action="{{ route('blog.search') }}" method="GET">
 
-        <input
-            type="text"
-            class="form-control mb-3"
-            placeholder="Search posts..."
-        >
+    <input
+        type="text"
+        name="q"
+        class="form-control mb-3"
+        placeholder="Search posts..."
+        value="{{ request('q') }}"
+    >
 
-        <button class="btn btn-dark">
-            Search
-        </button>
+    <button class="btn btn-dark">
+        Search
+    </button>
 
-    </form>
+  </form>
 
 </div>
 

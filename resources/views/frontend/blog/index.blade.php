@@ -24,6 +24,32 @@
             </div>
         @endif
 
+        {{-- Search Result --}}
+         
+          @if(isset($search))
+
+                <div class="category-header mb-4">
+
+                    <h1 class="mb-2">
+                        Search Results
+                    </h1>
+
+                    <p class="text-muted mb-0">
+
+                        Showing results for:
+
+                        <strong>
+                            {{ $search }}
+                        </strong>
+
+                    </p>
+
+                </div>
+
+            @endif
+
+        {{-- End Search Result --}}
+
         @forelse($posts as $post)
 
             <div class="blog-card">

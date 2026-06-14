@@ -79,4 +79,40 @@ class BlogController extends Controller
         return view('frontend.blog.index', compact('posts', 'category','recentPosts',
             'categories'));
     }
+
+    public function search(Request $request)
+        {
+            $search = $request->q;
+
+            $posts = Post::with('category')
+                        ->where('status', 'published')
+                        ->where(function ($query) use ($search) {
+
+                            $query->where('title', 'like', "%{$search}%")
+                                ->orWhere('excerpt', 'like', "%{$search}%")
+                                ->orWhere('content', 'like', "%{$search}%");
+
+                        })
+                        ->latest()
+                        ->paginate(10);
+
+            $recentPosts = Post::where('status', 'published')
+                                ->latest()
+                                ->take(5)
+                                ->get();
+
+            $categories = Category::where('status', true)
+                                    ->orderBy('name')
+                                    ->get();
+
+            return view(
+                'frontend.blog.index',
+                compact(
+                    'posts',
+                    'recentPosts',
+                    'categories',
+                    'search'
+                )
+            );
+        }
 }
