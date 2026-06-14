@@ -118,6 +118,46 @@
                 </div>
             @endif
 
+          {{-- Comment Box --}}
+
+          <div class="blog-card mt-4">
+    <h3>Leave a Comment</h3>
+
+            @if(session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            <form action="{{ route('comments.store') }}" method="POST">
+                @csrf
+
+                <input type="hidden" name="post_id" value="{{ $post->id }}">
+
+                <div class="mb-3">
+                    <label>Name</label>
+                    <input type="text" name="name" class="form-control" value="{{ old('name') }}">
+                    @error('name') <small class="text-danger">{{ $message }}</small> @enderror
+                </div>
+
+                <div class="mb-3">
+                    <label>Email</label>
+                    <input type="email" name="email" class="form-control" value="{{ old('email') }}">
+                    @error('email') <small class="text-danger">{{ $message }}</small> @enderror
+                </div>
+
+                <div class="mb-3">
+                    <label>Comment</label>
+                    <textarea name="message" rows="4" class="form-control">{{ old('message') }}</textarea>
+                    @error('message') <small class="text-danger">{{ $message }}</small> @enderror
+                </div>
+
+                <button class="btn btn-dark">
+                    Submit Comment
+                </button>
+            </form>
+        </div>
+
     </div>
 
     <div class="col-lg-4">

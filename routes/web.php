@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Frontend\BlogController;
+use App\Http\Controllers\Frontend\CommentController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,6 +19,9 @@ Route::get('/search', [BlogController::class, 'search'])
 
 Route::get('/tag/{slug}', [BlogController::class, 'tag'])
     ->name('tag.show');
+
+Route::post('/comments', [CommentController::class, 'store'])
+    ->name('comments.store');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
