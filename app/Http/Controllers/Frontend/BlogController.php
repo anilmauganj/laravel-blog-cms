@@ -16,35 +16,67 @@ class BlogController extends Controller
             ->latest()
             ->paginate(9);
 
-        return view('frontend.blog.index', compact('posts'));
+        $recentPosts = Post::where('status', 'published')
+                     ->latest()
+                     ->take(5)
+                     ->get();
+
+           $categories = Category::where('status', true)
+                        ->orderBy('name')
+                         ->get();
+
+         return view('frontend.blog.index',  compact('posts', 'recentPosts', 'categories'));
     }
 
 
      public function show(string $slug)
     {
         $post = Post::with('category')
-            ->where('slug', $slug)
-            ->where('status', 'published')
-            ->firstOrFail();
+                 ->where('slug', $slug)
+                 ->where('status', 'published')
+                 ->firstOrFail();
 
         $post->increment('views');
 
-        return view('frontend.blog.show', compact('post'));
+         $recentPosts = Post::where('status', 'published')
+                        ->latest()
+                        ->take(5)
+                        ->get();
+
+         $categories = Category::where('status', true)
+                        ->orderBy('name')
+                        ->get();
+
+
+        return view(
+        'frontend.blog.show',
+        compact('post', 'recentPosts', 'categories')
+        );
     }
 
 
      public function category(string $slug)
     {
         $category = Category::where('slug', $slug)
-            ->where('status', true)
-            ->firstOrFail();
+                             ->where('status', true)
+                             ->firstOrFail();
 
         $posts = $category->posts()
-            ->with('category')
-            ->where('status', 'published')
-            ->latest()
-            ->paginate(9);
+                          ->with('category')
+                          ->where('status', 'published')
+                          ->latest()
+                           ->paginate(9);
 
-        return view('frontend.blog.index', compact('posts', 'category'));
+        $recentPosts = Post::where('status', 'published')
+                            ->latest()
+                            ->take(5)
+                            ->get();
+        
+         $categories = Category::where('status', true)
+                                ->orderBy('name')
+                                ->get();
+
+        return view('frontend.blog.index', compact('posts', 'category','recentPosts',
+            'categories'));
     }
 }

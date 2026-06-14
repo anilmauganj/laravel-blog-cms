@@ -1,62 +1,60 @@
 @extends('frontend.layouts.app')
 
 @section('title', $post->seo_title ?: $post->title)
-
 @section('meta_description', $post->meta_description)
 
 @section('content')
 
 <div class="row">
 
-    <div class="col-lg-8 mx-auto">
+    <div class="col-lg-8">
 
-        <h1 class="mb-3">
-            {{ $post->title }}
-        </h1>
+        <article class="blog-card">
 
-        <div class="mb-3 text-muted">
+            <h1 class="blog-title">
+                {{ $post->title }}
+            </h1>
 
-            <strong>Category:</strong>
+            <div class="blog-meta">
+                @if($post->published_at)
+                    {{ $post->published_at->format('d M Y') }}
+                @endif
 
-            <a href="{{ route('category.show', $post->category->slug) }}">
-                {{ $post->category->name }}
-            </a>
+                &nbsp; | &nbsp;
 
-            |
+                <a href="{{ route('category.show', $post->category->slug) }}">
+                    {{ $post->category->name }}
+                </a>
 
-            <strong>Views:</strong>
-            {{ $post->views }}
+                &nbsp; | &nbsp;
 
-        </div>
+                {{ $post->views }} views
+            </div>
 
-        @if($post->featured_image)
-
-            <div class="mb-4">
-
+            @if($post->featured_image)
                 <img
                     src="{{ asset('storage/' . $post->featured_image) }}"
-                    class="img-fluid rounded"
+                    class="single-post-image mb-4"
                     alt="{{ $post->title }}"
                 >
+            @endif
 
+            @if($post->excerpt)
+                <p class="lead">
+                    {{ $post->excerpt }}
+                </p>
+            @endif
+
+            <div class="post-content">
+                {!! $post->content !!}
             </div>
 
-        @endif
+        </article>
 
-        @if($post->excerpt)
+    </div>
 
-            <div class="alert alert-light">
-                {{ $post->excerpt }}
-            </div>
-
-        @endif
-
-        <div>
-
-            {!! $post->content !!}
-
-        </div>
-
+    <div class="col-lg-4">
+        @include('frontend.partials.sidebar')
     </div>
 
 </div>

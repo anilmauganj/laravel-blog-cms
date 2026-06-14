@@ -1,99 +1,109 @@
 
-@php
-use Illuminate\Support\Str;
-@endphp
 
 @extends('frontend.layouts.app')
 
-@section('title', 'Latest Blog Posts')
+
 
 @section('content')
 
 <div class="row">
 
-    <div class="col-lg-12">
+    {{-- Left Content --}}
+    <div class="col-lg-8">
 
-        <h1 class="mb-4">
+         @if(isset($category))
+            <div class="category-header mb-4">
+                <h1 class="mb-2">
+                    {{ $category->name }}
+                </h1>
 
-            @isset($category)
-                {{ $category->name }}
-            @else
-                Latest Blog Posts
-            @endisset
+                <p class="text-muted mb-0">
+                    Showing posts from <strong>{{ $category->name }}</strong> category.
+                    Total posts: <strong>{{ $posts->total() }}</strong>
+                </p>
+            </div>
+        @endif
 
-        </h1>
+        @forelse($posts as $post)
 
-    </div>
+            <div class="blog-card">
 
-</div>
+                <div class="row">
 
+                    <div class="col-md-5">
 
-<div class="row">
+                        @if($post->featured_image)
 
-    @forelse($posts as $post)
+                            <img
+                                src="{{ asset('storage/' . $post->featured_image) }}"
+                                class="blog-thumb"
+                                alt="{{ $post->title }}"
+                            >
 
-        <div class="col-md-4 mb-4">
+                        @endif
 
-            <div class="card h-100">
+                    </div>
 
-                @if($post->featured_image)
+                    <div class="col-md-7">
 
-                    <img
-                        src="{{ asset('storage/' . $post->featured_image) }}"
-                        class="card-img-top"
-                        alt="{{ $post->title }}"
-                    >
+                        <h2 class="blog-title">
+                            <a href="{{ route('blog.show', $post->slug) }}">
+                                {{ $post->title }}
+                            </a>
+                        </h2>
 
-                @endif
+                        <div class="blog-meta">
 
-                <div class="card-body">
+                            @if($post->published_at)
+                                {{ $post->published_at->format('d M Y') }}
+                            @endif
 
-                    <h5 class="card-title">
-                        {{ $post->title }}
-                    </h5>
+                            &nbsp; | &nbsp;
 
-                    <p class="text-muted mb-2">
-
-                        <a href="{{ route('category.show', $post->category->slug) }}">
                             {{ $post->category->name }}
+
+                        </div>
+
+                        <p>
+                            {{ \Illuminate\Support\Str::limit(
+                                $post->excerpt ?: strip_tags($post->content),
+                                150
+                            ) }}
+                        </p>
+
+                        <a
+                            href="{{ route('blog.show', $post->slug) }}"
+                            class="read-more-btn"
+                        >
+                            Read More
                         </a>
 
-                    </p>
-
-                    <p>
-                        {{ Str::limit($post->excerpt, 100) }}
-                    </p>
-
-                    <a
-                        href="{{ route('blog.show', $post->slug) }}"
-                        class="btn btn-primary"
-                    >
-                        Read More
-                    </a>
+                    </div>
 
                 </div>
 
             </div>
 
-        </div>
-
-    @empty
-
-        <div class="col-12">
+        @empty
 
             <div class="alert alert-info">
                 No posts found.
             </div>
 
-        </div>
+        @endforelse
 
-    @endforelse
+        {{ $posts->links() }}
 
-</div>
+    </div>
 
 
-<div class="mt-4">
-    {{ $posts->links() }}
+    {{-- Sidebar --}}
+    <div class="col-lg-4">
+
+        @include('frontend.partials.sidebar')
+
+    </div>
+
 </div>
 
 @endsection
